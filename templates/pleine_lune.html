@@ -1,0 +1,141 @@
+<!--Extension du HTML layout-->
+{% extends "layout.html" %}
+
+<!--Changement du titre de la page-->
+{% block title %}Naissance à la pleine lune{% endblock %}
+
+<!--Chois du CSS-->
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'pleine_lune.css') }}">
+{% endblock %}
+
+<!--Block avec principal avec le texte-->
+{% block content%}
+    <h1>
+        Passage les jours de pleine lune
+    </h1>
+
+    <!-- Formulaire pour choisir le mois et l'année -->
+    <form method="POST" class="form">
+        <select name="month" class="date_select_month">
+            <option value="01">Choisissez un mois</option>
+            <option value="06">Juin</option>
+            <option value="07">Juillet</option>
+            <option value="08">Aout</option>
+            <option value="09">Septembre</option>
+            <option value="10">Octobre</option>
+        </select>
+
+        <select name="year" class="date_select_year">
+            <option value="2022">Choisissez une année</option>
+            <option value="2022">2022</option>
+        </select>
+
+        <select name="type" class="data_select_type">
+            <option value="1">Choisissez un type de véhicules</option>
+            <option value="6">pietons</option>
+            <option value="5">velos</option>
+            <option value="4">voitures</option>
+            <option value="3">camions</option>
+            <option value="1">tous</option>
+        </select>
+
+        <button type="submit" class="btn btn-default">Go</button>
+    </form>
+
+    <h3 class="date">{{date}}</h3>
+    <h4 class="date">{{lune}}</h4>
+
+    <!--Creation d'une boite de 200x200 pour le graphique-->
+    <canvas id="graphique" width="300" height="auto"></canvas>
+
+    <!--Script du graphique en JavaScript-->
+    <script>
+
+        var ctx = document.getElementById('graphique').getContext('2d');
+
+        var myChart = new Chart(ctx, {
+            // type de graphique
+            type: 'bar',
+
+            // les données
+            data: {
+                labels: {{keys}},
+                datasets: [{
+                    label: "Nombre de passage",
+                    data: {{data}},
+                    backgroundColor: 'rgb(0, 0, 223, 0.3)',
+                    borderColor : 'rgb(0, 0, 223)',
+                    borderWidth: 1
+                   }]
+                },
+            // les options du graphique
+            options : {
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Nombres de passage',
+                            },
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1,
+                            }
+                        }],
+                    xAxes:[{
+                        scaleLabel:{
+                            display : true,
+                            labelString: 'Jours'
+                            }
+                        }]
+                    }
+                },
+            }
+        );
+
+    </script>
+
+    <h1>passages durant une pleine lune et hors </h1>
+
+    <!--Creation d'une boite de 200x200 pour le graphique-->
+    <canvas id="graphique2" width="200" height="auto"></canvas>
+
+    <!--Script du graphique en JavaScript-->
+    <script>
+
+        var ctx = document.getElementById('graphique2').getContext('2d');
+
+        var myChart = new Chart(ctx, {
+            // type de graphique
+            type: 'bar',
+
+            // les données
+            data: {
+                labels: ["passages hors pleine lune", "passages à la pleine lune"],
+                datasets: [{
+                    label: "Rapport entre le nombre de passages pendant et hors de la pleine lune",
+                    data: {{data2}},
+                    backgroundColor: ['rgb(223, 0, 0, 0.3)','rgb(0, 223, 0, 0.3)'],
+                    borderColor : ['rgb(223, 0, 0)', 'rgb(0, 223, 0)'],
+                    borderWidth: 1
+                   }]
+                },
+            // les options du graphique
+            options : {
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: '% de passages',
+                            },
+                        ticks: {
+                            beginAtZero: true,
+                            }
+                        }],
+                    }
+                },
+            }
+        );
+
+    </script>
+{% endblock %}

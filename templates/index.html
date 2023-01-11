@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'index.css') }}">
+{% endblock %}
+
+{% block content%}
+<div class="rectangle">
+    <h1>
+        LINFO1002 Projet 2
+    </h1>
+</div>
+
+<table class="tableau">
+    <h1>
+        Quelques informations sur la rue
+    </h1>
+
+    <thead>
+        <tr>
+            <th colspan="6">Tableau récapitulatif de la rue</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Nombre de voitures</td>
+            <td>Nombre de velos</td>
+            <td>Nombre de camions</td>
+            <td>Nombre de pietons</td>
+
+        </tr>
+        <tr>
+            <td>{{voitures}}</td>
+            <td>{{velos}}</td>
+            <td>{{camions}}</td>
+            <td>{{pietons}}</td>
+
+        </tr>
+    </tbody>
+</table>
+
+{%endblock%}
